@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Batalla Pokémon</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer> </script>
+</head>
+<body>
+  <h1>¡Batalla Pokémon!</h1>
+  <select id="selector-jugador">
+  <option value="">-- Elegí tu Pokémon --</option>
+  <option value="pikachu">Pikachu</option>
+  <option value="charmander">Charmander</option>
+  <option value="bulbasaur">Bulbasaur</option>
+  <option value="squirtle">Squirtle</option>
+  <option value="traniela">Traniela</option>
+</select>
+
+<div class="battlefield">
+  <div>
+    <img id="img-jugador" src="" alt="Tu Pokémon" class="pokemon" />
+    <p id="nombre-jugador">Tu Pokémon</p>
+  </div>
+  <div>
+    <img src="img/charmander1.png" alt="Charmander" class="pokemon" />
+    <p>Charmander</p>
+  </div>
+</div>
+
+<button id="btn-batalla">Empezar batalla</button>
+
+<div id="vidas" style="display: none;">
+  <div class="vida-section">
+    <h3>Tu Pokémon</h3>
+    <div class="barra-vida">
+      <div class="vida" id="vida-jugador" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <div class="vida-section">
+    <h3>Oponente</h3>
+    <div class="barra-vida">
+      <div class="vida" id="vida-oponente" style="width: 100%;"></div>
+    </div>
+  </div>  
+</div>
+
+<button id="btn-atacar">Atacar al enemigo</button>
+</body>
+</html>
