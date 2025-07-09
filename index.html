@@ -8,6 +8,16 @@
   <script src="js/main.js" defer> </script>
 </head>
 <body>
+  <div class="contenedor">
+    <h1>¡Bienvenido concursante al Torneo Pokemon 2025!</h1>
+
+    <input type="text" id="nombreInput" placeholder="Tu nombre de entrenador">
+    <button id="guardarBtn">Guardar nombre</button>
+
+    <p id="bienvenida"></p>
+  </div>
+
+
   <h1>¡Batalla Pokémon!</h1>
   <select id="selector-jugador">
   <option value="">-- Elegí tu Pokémon --</option>
@@ -15,7 +25,7 @@
   <option value="charmander">Charmander</option>
   <option value="bulbasaur">Bulbasaur</option>
   <option value="squirtle">Squirtle</option>
-  <option value="traniela">Traniela</option>
+  <option value="psyduck">Psyduck</option>
 </select>
 
 <div class="battlefield">
@@ -24,8 +34,8 @@
     <p id="nombre-jugador">Tu Pokémon</p>
   </div>
   <div>
-    <img src="img/charmander1.png" alt="Charmander" class="pokemon" />
-    <p>Charmander</p>
+    <img id="img-enemigo" src="" alt="Adversario"  class="pokemon" />
+    <p id="nombre-enemigo">Pokemon Enemigo</p>
   </div>
 </div>
 
