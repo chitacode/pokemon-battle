@@ -97,7 +97,8 @@ selector.addEventListener("change", () => {
     nombreEnemigo.textContent = pokemones[pokemonEnemigo].nombre;
 
   } else {
-    imgJugador.src = "";
+    imgJugador.src = "img/pokeball.png";
+    imgEnemigo.src = "img/pokeball.png"
     imgJugador.alt = "";
     nombreJugador.textContent = "Tu Pokémon";
     pokemonEnemigo = null;
