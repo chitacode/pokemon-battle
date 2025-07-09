@@ -119,16 +119,34 @@ btnBatalla.addEventListener("click", () => {
   hpOponente = 100;
   actualizarBarra(vidaJugador, hpJugador);
   actualizarBarra(vidaOponente, hpOponente);
+  btnBatalla.disabled = true;
+  selector.disabled = true;
 });
 /* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos  */
 function atacar(danio, aQuien) {
   if (aQuien === "enemigo") {
     hpOponente = Math.max(hpOponente - danio, 0);
     actualizarBarra(vidaOponente, hpOponente);
+
+    if (hpOponente === 0) {
+      alert("¡Ganaste la batalla!");
+      finDeBatalla();
+    }
+
   } else if (aQuien === "jugador") {
     hpJugador = Math.max(hpJugador - danio, 0);
     actualizarBarra(vidaJugador, hpJugador);
+
+    if (hpJugador === 0) {
+      alert("¡Perdiste la batalla!");
+      finDeBatalla();
+    }
   }
+}
+/* REACTIVA EL BOTON BATALLA Y EL SELECTOR */
+function finDeBatalla() {
+  btnBatalla.disabled = false;
+  selector.disabled = false;
 }
 
 function actualizarBarra(barra, vida) {
@@ -140,7 +158,7 @@ const btnAtacar = document.getElementById("btn-atacar");
 
 btnAtacar.addEventListener("click", () => {
   atacar(20, "enemigo");
-  setTimeout(() => ataqueEnemigo(pokemonEnemigo), 500);
+  setTimeout(() => ataqueEnemigo(pokemonEnemigo), 200);
 });
 
 function ataqueEnemigo(pokemon) {
