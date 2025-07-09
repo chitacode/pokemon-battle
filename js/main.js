@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const boton = document.getElementById("guardarBtn");
   const mensaje = document.getElementById("bienvenida");
 
+
   
   const nombreGuardado = localStorage.getItem("entrenador");
   if (nombreGuardado) {
@@ -88,7 +89,7 @@ selector.addEventListener("change", () => {
     imgJugador.alt = pokemones[elegido].nombre;
     nombreJugador.textContent = pokemones[elegido].nombre;
    
-  /* POKEMON ENEMIGO ALEATORIO , MENOS EL QUE ELEGI */
+  /* POKEMON ENEMIGO ALEATORIO , MENOS EL QUE ELEJI */
     const claves = Object.keys(pokemones).filter(poke => poke !== elegido);
     const randomIndex = Math.floor(Math.random() * claves.length);
     pokemonEnemigo = claves[randomIndex];
@@ -114,6 +115,7 @@ let hpJugador = 100;
 let hpOponente = 100;
 
 btnBatalla.addEventListener("click", () => {
+ 
   contenedorVidas.style.display = "flex";
   hpJugador = 100;
   hpOponente = 100;
@@ -122,7 +124,7 @@ btnBatalla.addEventListener("click", () => {
   btnBatalla.disabled = true;
   selector.disabled = true;
 });
-/* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos  */
+/* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos, TENGO QUE PASAR DEL ALERT A MOSTRARLO EN UN <P>  */
 function atacar(danio, aQuien) {
   if (aQuien === "enemigo") {
     hpOponente = Math.max(hpOponente - danio, 0);
