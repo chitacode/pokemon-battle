@@ -3,10 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const input = document.getElementById("nombreInput");
   const boton = document.getElementById("guardarBtn");
   const mensaje = document.getElementById("bienvenida");
-
-
-  
   const nombreGuardado = localStorage.getItem("entrenador");
+  
   if (nombreGuardado) {
     mensaje.textContent = `¡Bienvenido de nuevo, ${nombreGuardado}!`;
   }
@@ -23,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+const btnAtacar = document.getElementById("btn-atacar");
+const btnBatalla = document.getElementById("btn-batalla");
+
 
 /* OBJETOS PARA SELECCIONAR TUS POKEMONES */
 const pokemones = {
@@ -73,6 +75,8 @@ const pokemones = {
   }
 };
 
+const mensajeBatalla = document.getElementById("mensaje-batalla");
+
 const selector = document.getElementById("selector-jugador");
 const imgJugador = document.getElementById("img-jugador");
 const nombreJugador = document.getElementById("nombre-jugador");
@@ -81,21 +85,27 @@ const imgEnemigo = document.getElementById("img-enemigo");
 const nombreEnemigo = document.getElementById("nombre-enemigo");
 
 /* SELECCION DE POKEMON AMIGO Y ENEMIGO */
-selector.addEventListener("change", () => {
-  const elegido = selector.value;
+ btnBatalla.disabled = true;
+ btnAtacar.disabled = true;
 
+ selector.addEventListener("change", () => {
+  const elegido = selector.value;
+  
+  
   if (pokemones[elegido]) {
     imgJugador.src = pokemones[elegido].imagen;
     imgJugador.alt = pokemones[elegido].nombre;
     nombreJugador.textContent = pokemones[elegido].nombre;
-   
-  /* POKEMON ENEMIGO ALEATORIO , MENOS EL QUE ELEJI */
+    
+    /* POKEMON ENEMIGO ALEATORIO , MENOS EL QUE ELEJI */
     const claves = Object.keys(pokemones).filter(poke => poke !== elegido);
     const randomIndex = Math.floor(Math.random() * claves.length);
     pokemonEnemigo = claves[randomIndex];
     imgEnemigo.src = pokemones[pokemonEnemigo].imagen;
     imgEnemigo.alt = pokemones[pokemonEnemigo].nombre;
     nombreEnemigo.textContent = pokemones[pokemonEnemigo].nombre;
+    
+    btnBatalla.disabled = false;
 
   } else {
     imgJugador.src = "img/pokeball.png";
@@ -103,10 +113,11 @@ selector.addEventListener("change", () => {
     imgJugador.alt = "";
     nombreJugador.textContent = "Tu Pokémon";
     pokemonEnemigo = null;
+   
   }
 });
 // VIDA Y ATAQUE DE LOS POKEMONES|
-const btnBatalla = document.getElementById("btn-batalla");
+
 const contenedorVidas = document.getElementById("vidas");
 const vidaJugador = document.getElementById("vida-jugador");
 const vidaOponente = document.getElementById("vida-oponente");
@@ -123,6 +134,7 @@ btnBatalla.addEventListener("click", () => {
   actualizarBarra(vidaOponente, hpOponente);
   btnBatalla.disabled = true;
   selector.disabled = true;
+  btnAtacar.disabled = false;
 });
 /* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos, TENGO QUE PASAR DEL ALERT A MOSTRARLO EN UN <P>  */
 function atacar(danio, aQuien) {
@@ -131,8 +143,8 @@ function atacar(danio, aQuien) {
     actualizarBarra(vidaOponente, hpOponente);
 
     if (hpOponente === 0) {
-      alert("¡Ganaste la batalla!");
-      finDeBatalla();
+      mensajeBatalla.textContent = "¡Ganaste la batalla!";
+        finDeBatalla();
     }
 
   } else if (aQuien === "jugador") {
@@ -140,7 +152,7 @@ function atacar(danio, aQuien) {
     actualizarBarra(vidaJugador, hpJugador);
 
     if (hpJugador === 0) {
-      alert("¡Perdiste la batalla!");
+      mensajeBatalla.textContent = "Perdiste la batalla, entrena mejor a tus pokemons";
       finDeBatalla();
     }
   }
@@ -156,7 +168,7 @@ function actualizarBarra(barra, vida) {
   barra.style.backgroundColor = vida > 50 ? "green" : vida > 20 ? "orange" : "red";
 }
 
-const btnAtacar = document.getElementById("btn-atacar");
+
 
 btnAtacar.addEventListener("click", () => {
   atacar(20, "enemigo");
