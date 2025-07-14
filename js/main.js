@@ -31,6 +31,7 @@ const pokemones = {
   pikachu: {
     nombre: "Pikachu",
     imagen: "img/pikachu.png",
+    imagenDerrotado: "img/pikachuDefeated.jpg",
     ataques: [
       { nombre: "Arañazo" , min:5, max: 10},
       { nombre: "Impactrueno" , min:8, max: 14},
@@ -40,6 +41,7 @@ const pokemones = {
   charmander: {
     nombre: "Charmander",
     imagen: "img/charmander1.png",
+    imagenDerrotado: "img/charmanderDefeated.png",
     ataques: [
       { nombre: "Arañazo" , min:5, max: 10},
       { nombre: "Ascuas" , min:8, max: 14},
@@ -49,6 +51,7 @@ const pokemones = {
   bulbasaur: {
     nombre: "Bulbasaur",
     imagen: "img/bulbasaur1.png",
+    imagenDerrotado: "img/bulbasaurDefeated.jpg",
     ataques: [
       { nombre: "Placaje" , min:5, max: 10},
       { nombre: "Gruñido" , min:8, max: 14},
@@ -58,6 +61,7 @@ const pokemones = {
   squirtle: {
     nombre: "Squirtle",
     imagen: "img/squirtle1.png",
+    imagenDerrotado: "img/squirtleDefeated.jpg",
     ataques: [
       { nombre: "Placaje" , min:5, max: 10},
       { nombre: "Gruñido" , min:8, max: 14},
@@ -67,6 +71,7 @@ const pokemones = {
   psyduck: {
     nombre: "Psyduck",
     imagen: "img/psyduck.png",
+    imagenDerrotado: "img/psyduckDefeated.jpg",
     ataques: [
       { nombre: "Nada" , min:0, max: 0},
       { nombre: "Mordisco" , min:8, max: 14},
@@ -81,6 +86,7 @@ const selector = document.getElementById("selector-jugador");
 const imgJugador = document.getElementById("img-jugador");
 const nombreJugador = document.getElementById("nombre-jugador");
 let pokemonEnemigo= null;
+let elegido = null;
 const imgEnemigo = document.getElementById("img-enemigo");
 const nombreEnemigo = document.getElementById("nombre-enemigo");
 
@@ -89,7 +95,7 @@ const nombreEnemigo = document.getElementById("nombre-enemigo");
  btnAtacar.disabled = true;
 
  selector.addEventListener("change", () => {
-  const elegido = selector.value;
+   elegido = selector.value;
   
   
   if (pokemones[elegido]) {
@@ -126,7 +132,11 @@ let hpJugador = 100;
 let hpOponente = 100;
 
 btnBatalla.addEventListener("click", () => {
- 
+   if (btnBatalla.textContent === "Reiniciar") {
+    resetJuego();
+    return;
+  }
+
   contenedorVidas.style.display = "flex";
   hpJugador = 100;
   hpOponente = 100;
@@ -136,13 +146,14 @@ btnBatalla.addEventListener("click", () => {
   selector.disabled = true;
   btnAtacar.disabled = false;
 });
-/* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos, TENGO QUE PASAR DEL ALERT A MOSTRARLO EN UN <P>  */
+/* ATAQUE DE POKEMON, falta agregar seleccion de ataques de PJ jugador, ataque-debilidad por tipos, TENGO QUE REINICIAR TODO CUANDO SE GANA O SE PIERDE */
 function atacar(danio, aQuien) {
   if (aQuien === "enemigo") {
     hpOponente = Math.max(hpOponente - danio, 0);
     actualizarBarra(vidaOponente, hpOponente);
 
     if (hpOponente === 0) {
+      imgEnemigo.src = pokemones[pokemonEnemigo].imagenDerrotado;
       mensajeBatalla.textContent = "¡Ganaste la batalla!";
         finDeBatalla();
     }
@@ -152,6 +163,7 @@ function atacar(danio, aQuien) {
     actualizarBarra(vidaJugador, hpJugador);
 
     if (hpJugador === 0) {
+      imgJugador.src = pokemones[elegido].imagenDerrotado;
       mensajeBatalla.textContent = "Perdiste la batalla, entrena mejor a tus pokemons";
       finDeBatalla();
     }
@@ -159,7 +171,9 @@ function atacar(danio, aQuien) {
 }
 /* REACTIVA EL BOTON BATALLA Y EL SELECTOR */
 function finDeBatalla() {
+  btnBatalla.textContent = "Reiniciar";
   btnBatalla.disabled = false;
+  btnAtacar.disabled = true
   selector.disabled = false;
 }
 
@@ -183,4 +197,31 @@ function ataqueEnemigo(pokemon) {
   /* ESTO LO TENGO QUE PONER EN UN DIV PARA MOSTRARLO EN PANTALLA  */
   console.log(`${pokemones[pokemon].nombre} usó ${ataque.nombre} e hizo ${danio} de daño`);
   atacar(danio, "jugador");
+}
+
+function resetJuego() {
+
+  imgJugador.src = "img/pokeball.png";
+  imgJugador.alt = "";
+  nombreJugador.textContent = "Tu Pokémon";
+
+  imgEnemigo.src = "img/pokeball.png";
+  imgEnemigo.alt = "";
+  nombreEnemigo.textContent = "Oponente";
+
+  contenedorVidas.style.display = "none";
+  vidaJugador.style.width = "100%";
+  vidaOponente.style.width = "100%";
+
+
+  mensajeBatalla.textContent = "";
+
+  selector.disabled = false;
+  btnBatalla.textContent = "Empezar Batalla";
+  btnBatalla.disabled = true;
+  btnAtacar.disabled = true;
+
+
+  hpJugador = 100;
+  hpOponente = 100;
 }
