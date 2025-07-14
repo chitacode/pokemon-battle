@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const btnAtacar = document.getElementById("btn-atacar");
 const btnBatalla = document.getElementById("btn-batalla");
-
+const nombreGuardado = localStorage.getItem("entrenador");
 
 /* OBJETOS PARA SELECCIONAR TUS POKEMONES */
 const pokemones = {
@@ -155,6 +155,7 @@ function atacar(danio, aQuien) {
     if (hpOponente === 0) {
       imgEnemigo.src = pokemones[pokemonEnemigo].imagenDerrotado;
       mensajeBatalla.textContent = "¡Ganaste la batalla!";
+      guardarResultadoBatalla(localStorage.getItem("entrenador"), pokemones[elegido].nombre, pokemones[pokemonEnemigo].nombre, "ganada");
         finDeBatalla();
     }
 
@@ -165,6 +166,7 @@ function atacar(danio, aQuien) {
     if (hpJugador === 0) {
       imgJugador.src = pokemones[elegido].imagenDerrotado;
       mensajeBatalla.textContent = "Perdiste la batalla, entrena mejor a tus pokemons";
+      guardarResultadoBatalla(localStorage.getItem("entrenador"), pokemones[elegido].nombre, pokemones[pokemonEnemigo].nombre, "perdida");
       finDeBatalla();
     }
   }
@@ -183,7 +185,7 @@ function actualizarBarra(barra, vida) {
 }
 
 
-
+/* ESTO LO TENGO QUE MODIFICAR POR QUE SIEMPRE BAJA LO MISMO, HACER UNA SELECCION DE ATAQUES O ATAQUE RANDOM */ 
 btnAtacar.addEventListener("click", () => {
   atacar(20, "enemigo");
   setTimeout(() => ataqueEnemigo(pokemonEnemigo), 200);
@@ -224,4 +226,40 @@ function resetJuego() {
 
   hpJugador = 100;
   hpOponente = 100;
+}
+
+
+/* intento de JSON con localstorage */ 
+function guardarResultadoBatalla(entrenador, pokemonJugador, pokemonEnemigo, resultado) {
+  const nuevaBatalla = {
+    fecha: new Date().toLocaleString(),
+    entrenador: entrenador,
+    pokemonJugador: pokemonJugador,
+    pokemonEnemigo: pokemonEnemigo,
+    resultado: resultado
+  };
+
+
+  const historial = JSON.parse(localStorage.getItem("historialBatallas")) || [];
+  const contenedorHistorial = document.getElementById("historial-container");
+
+  
+  historial.push(nuevaBatalla);
+
+  localStorage.setItem("historialBatallas", JSON.stringify(historial));
+
+
+
+/* ESTO LIMPIA */
+contenedorHistorial.innerHTML = "";
+
+if (historial.length === 0) {
+  contenedorHistorial.textContent = "Todavía no hay historial";
+} else {
+  historial.forEach(batalla => {
+    const p = document.createElement("p");
+    p.textContent = `${batalla.fecha} - Entrenador: ${batalla.entrenador} - Pokémon: ${batalla.pokemonJugador} vs ${batalla.pokemonEnemigo} - Resultado: ${batalla.resultado}`;
+    contenedorHistorial.appendChild(p);
+  });
+}
 }
